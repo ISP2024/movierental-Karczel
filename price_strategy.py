@@ -1,14 +1,30 @@
-class PriceStrategy:
+from abc import ABC, abstractmethod
+
+
+class PriceStrategy(ABC):
     """Base class for price strategies."""
 
+    _instance = None
+
+    @classmethod
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(PriceStrategy, cls).__new__(cls)
+        return cls._instance
+
+    @abstractmethod
     def get_price(self, days):
-        raise NotImplementedError
+        """The price of this movie rental."""
+        pass
 
+    @abstractmethod
     def get_rental_points(self, days):
-        raise NotImplementedError
+        """The frequent renter points earned for this rental."""
+        pass
 
+class RegularPrice(PriceStrategy):
+    """Pricing rules for Regular movies."""
 
-class RegularPriceStrategy(PriceStrategy):
     def get_price(self, days):
         amount = 2.0
         if days > 2:
@@ -19,7 +35,9 @@ class RegularPriceStrategy(PriceStrategy):
         return 1
 
 
-class ChildrensPriceStrategy(PriceStrategy):
+class ChildrensPrice(PriceStrategy):
+    """Pricing rules for Children's movies."""
+
     def get_price(self, days):
         amount = 1.5
         if days > 3:
@@ -30,7 +48,9 @@ class ChildrensPriceStrategy(PriceStrategy):
         return 1
 
 
-class NewReleasePriceStrategy(PriceStrategy):
+class NewRelease(PriceStrategy):
+    """Pricing rules for New Release movies."""
+
     def get_price(self, days):
         return 3.0 * days
 

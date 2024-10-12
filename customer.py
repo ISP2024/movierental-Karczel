@@ -32,26 +32,46 @@ class Customer:
         Returns:
             the statement as a String
         """
-        # the .format method substitutes actual values into the fmt string
-        statement = f"Rental Report for {self.name}\n\n"
-        header_fmt = "{:40s}  {:6s} {:6s}\n"
-        statement += header_fmt.format("Movie Title", "  Days", " Price")
+
+        # Generate the header section of the statement
+        statement = self.header()
+
         rental_fmt = "{:40s}  {:6d} {:6.2f}\n"
-        
-        for rental in self.rentals:
-            #  add a detail line to statement
-            statement += rental_fmt.format(
-                rental.get_movie().get_title(),
-                rental.get_days_rented(),
-                rental.get_price())
-            # and accumulate activity
-        # footer: summary of charges
-        statement += "\n"
-        statement += "{:40s}  {:6s} {:6.2f}\n".format(
-            "Total Charges", "", self.total_charge())
-        statement += "Frequent Renter Points earned: {}\n".format(self.get_total_rental_points())
+        details = ""
+        # Generate the rental details
+        statement += self.rental_details(rental_fmt, details)
+
+        # Generate the footer section (total charges and frequent renter points)
+        statement += self.footer()
 
         return statement
+
+    def header(self):
+        header_fmt = "{:40s}  {:6s} {:6s}\n"
+        return f"Rental Report for {self.name}\n\n" + header_fmt.format("Movie Title", "  Days", " Price")
+
+    def rental_details(self, rental_fmt, details, index=0):
+        if index >= len(self.rentals):
+            return ""
+        rental = self.rentals[index]
+
+        # Handle edge case: if rental days are negative
+        if rental.get_days_rented() < 0:
+            raise ValueError(f"Rental days cannot be negative for movie: {rental.get_movie().get_title()}")
+
+        # Add details to the statement
+        details += rental_fmt.format(
+            rental.get_movie().get_title(),
+            rental.get_days_rented(),
+            rental.get_price()
+        )
+        return details
+
+    def footer(self):
+        footer = "\n"
+        footer += "{:40s}  {:6s} {:6.2f}\n".format("Total Charges", "", self.total_charge())
+        footer += "Frequent Renter Points earned: {}\n".format(self.get_total_rental_points())
+        return footer
 
     def get_total_rental_points(self,index=0):
         """Calculate the total rental charges for the current rentals."""
