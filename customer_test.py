@@ -56,6 +56,27 @@ class CustomerTest(unittest.TestCase):
         # Total charge should be 3.0 + 2.0 + 1.5 = 6.5
         self.assertEqual(self.c.total_charge(), 6.5)
 
+    def text_freq_points(self):
+        """Test total rental points calculation."""
+        rental1 = Rental(self.new_movie, 1)  # 1 point (new release)
+        rental2 = Rental(self.regular_movie, 3)  # 1 point (regular)
+        rental3 = Rental(self.childrens_movie, 2)  # 1 point (children's)
+
+        self.c.rentals = [rental1, rental2, rental3]
+
+        total_points = self.c.get_total_rental_points()
+
+        # Assert the expected value (1 + 1 + 1 = 3)
+        self.assertEqual(total_points, 3)
+
+        # a new release rental that lasts more than 1 day
+        rental4 = Rental(self.new_movie, 5)  # 5 points for 5 days
+        self.c.rentals.append(rental4)
+
+        # total rental points should be 3 + 5  = 8
+        total_points = self.c.get_total_rental_points()
+        self.assertEqual(total_points, 8)
+
     def test_statement(self):
         stmt = self.c.statement()
         # get total charges from statement using a regex
