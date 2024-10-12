@@ -49,12 +49,16 @@ class Customer:
                 rental.get_days_rented(),
                 rental.get_price())
             # and accumulate activity
-            total_amount += rental.get_price()
-
         # footer: summary of charges
         statement += "\n"
         statement += "{:40s}  {:6s} {:6.2f}\n".format(
-                       "Total Charges", "", total_amount)
+            "Total Charges", "", self.total_charge())
         statement += "Frequent Renter Points earned: {}\n".format(frequent_renter_points)
 
         return statement
+
+    def total_charge(self,index=0):
+        """Calculate the total rental charges for the current rentals."""
+        if index >= len(self.rentals):
+            return 0
+        return self.rentals[index].get_price() + self.total_charge(index+1)
