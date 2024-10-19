@@ -61,7 +61,7 @@ class Customer:
 
         # Add details to the statement
         details += rental_fmt.format(
-            rental.get_movie().get_title(),
+            str(rental.get_movie()),
             rental.get_days_rented(),
             rental.get_price()
         )
