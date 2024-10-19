@@ -3,13 +3,9 @@ class Movie:
     A movie available for rent.
     """
     
-    def __init__(self, title, price_strategy):
+    def __init__(self, title):
         # Initialize a new movie. 
         self.title = title
-        self.price_strategy = price_strategy
-
-    def get_price_strategy(self):
-        return self.price_strategy
 
     def get_title(self):
         return self.title
