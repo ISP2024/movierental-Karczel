@@ -69,7 +69,7 @@ class Customer:
 
     def footer(self):
         footer = "\n"
-        footer += "{:40s}  {:6s} {:6.2f}\n".format("Total Charges", "", self.total_charge())
+        footer += "{:40s}  {:6s} {:6.2f}\n".format("Total Charges", "", self.get_total_charge())
         footer += "Frequent Renter Points earned: {}\n".format(self.get_total_rental_points())
         return footer
 
@@ -77,10 +77,10 @@ class Customer:
         """Calculate the total rental charges for the current rentals."""
         if index >= len(self.rentals):
             return 0
-        return self.rentals[index].get_rental_points() + self.total_charge(index + 1)
+        return self.rentals[index].get_rental_points() + self.get_total_rental_points(index + 1)
 
-    def total_charge(self,index=0):
+    def get_total_charge(self, index=0):
         """Calculate the total rental charges for the current rentals."""
         if index >= len(self.rentals):
             return 0
-        return self.rentals[index].get_price() + self.total_charge(index+1)
+        return self.rentals[index].get_price() + self.get_total_charge(index + 1)
