@@ -29,7 +29,7 @@ class Rental:
 
     def get_price(self):
         """Compute rental charge by delegating to the movie's price strategy."""
-        return self.movie.get_price(self.days_rented)
+        return self.movie.price_strategy.get_price(self.days_rented)
 
-    def rental_points(self):
-        return self.movie.get_rental_points(self.days_rented)
+    def get_rental_points(self):
+        return self.movie.price_strategy.get_rental_points(self.days_rented)

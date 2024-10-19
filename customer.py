@@ -77,7 +77,7 @@ class Customer:
         """Calculate the total rental charges for the current rentals."""
         if index >= len(self.rentals):
             return 0
-        return self.rentals[index].rental_points() + self.total_charge(index+1)
+        return self.rentals[index].get_rental_points() + self.total_charge(index + 1)
 
     def total_charge(self,index=0):
         """Calculate the total rental charges for the current rentals."""
